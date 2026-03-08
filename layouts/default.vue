@@ -1,11 +1,14 @@
-<!-- layouts/default.vue
-     TEMPLATE (Atomic Design): estrutura da área autenticada.
-     Orquestra os organismos AppSidebar e AppHeader. -->
 <script setup lang="ts">
-const competencia = useCompetenciaStore()
-const collapsed = ref(false)
+const competencia = useCompetenciaStore();
+const collapsed = ref(false);
 
-onMounted(() => competencia.buscarAtual())
+onMounted(async () => {
+  try {
+    await competencia.buscarAtual();
+  } catch {
+    /* silencioso */
+  }
+});
 </script>
 
 <template>

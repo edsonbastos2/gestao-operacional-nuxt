@@ -1,28 +1,63 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient } from "@supabase/supabase-js";
 
 export default defineEventHandler(async (event) => {
-  const token = getCookie(event, 'sgo-token')
-  if (!token) return null
+  const token = getCookie(event, "sgo-token");
+  if (!token) return null;
 
-  const config = useRuntimeConfig()
-  const supabase = createClient(process.env.SUPABASE_URL!, config.supabaseServiceKey)
+  const config = useRuntimeConfig();
+  const supabaseUrl = process.env.SUPABASE_URL;
+  const anonKey = process.env.SUPABASE_KEY;
+  const serviceKey = config.supabaseServiceKey;
 
-  const { data: { user }, error } = await supabase.auth.getUser(token)
-  if (error || !user) { deleteCookie(event, 'sgo-token'); return null }
+  if (!supabaseUrl || !anonKey || !serviceKey) return null;
 
-  const { data: sgoUser } = await supabase
-    .from('sgo_usuarios')
-    .select('id, nome, email, perfil, status, primeiro_acesso, sgo_capacidades_usuario(capacidade, revogada_em, validade)')
-    .eq('auth_user_id', user.id)
-    .eq('status', 'ativo')
-    .single()
+  try {
+    const supabaseAuth = createClient(supabaseUrl, anonKey);
+    const {
+      data: { user },
+      error: authErr,
+    } = await supabaseAuth.auth.getUser(token);
+    if (authErr || !user) {
+      deleteCookie(event, "sgo-token");
+      return null;
+    }
 
-  if (!sgoUser) { deleteCookie(event, 'sgo-token'); return null }
+    const supabaseService = createClient(supabaseUrl, serviceKey);
 
-  const agora = new Date()
-  const capacidades = (sgoUser.sgo_capacidades_usuario ?? [])
-    .filter((c: any) => !c.revogada_em && !(c.validade && new Date(c.validade) < agora))
-    .map((c: any) => c.capacidade)
+    // maybeSingle não quebra se vier mais de um ou nenhum resultado
+    const { data: sgoUser } = await supabaseService
+      .from("sgo_usuarios")
+      .select("id, nome, email, perfil, status, primeiro_acesso")
+      .eq("auth_user_id", user.id)
+      .eq("status", "ativo")
+      .limit(1)
+      .maybeSingle();
 
-  return { id: sgoUser.id, nome: sgoUser.nome, email: sgoUser.email, perfil: sgoUser.perfil, capacidades, primeiro_acesso: sgoUser.primeiro_acesso }
-})
+    if (!sgoUser) {
+      deleteCookie(event, "sgo-token");
+      return null;
+    }
+
+    const agora = new Date();
+    const { data: caps } = await supabaseService
+      .from("sgo_capacidades_usuario")
+      .select("capacidade, revogada_em, validade")
+      .eq("usuario_id", sgoUser.id)
+      .is("revogada_em", null);
+
+    const capacidades = (caps ?? [])
+      .filter((c: any) => !(c.validade && new Date(c.validade) < agora))
+      .map((c: any) => c.capacidade);
+
+    return {
+      id: sgoUser.id,
+      nome: sgoUser.nome,
+      email: sgoUser.email,
+      perfil: sgoUser.perfil,
+      capacidades,
+      primeiro_acesso: sgoUser.primeiro_acesso,
+    };
+  } catch {
+    return null;
+  }
+});
