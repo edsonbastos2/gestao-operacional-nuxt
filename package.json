@@ -1,0 +1,29 @@
+{
+  "name": "sgo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "dependencies": {
+    "@nuxtjs/supabase": "^1.4.6",
+    "@pinia/nuxt": "^0.10.1",
+    "@primevue/nuxt-module": "^4.3.3",
+    "@primevue/themes": "^4.3.3",
+    "nuxt": "3.15.4",
+    "pinia": "^3.0.1",
+    "primevue": "^4.3.3",
+    "vue": "^3.5.13",
+    "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.0",
+    "@types/node": "^22.13.10",
+    "tailwindcss": "^4.0.0",
+    "typescript": "^5.7.3"
+  }
+}

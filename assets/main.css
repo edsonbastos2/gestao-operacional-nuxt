@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* ── Variáveis ── */
+:root {
+  --sgo-sidebar-width: 260px;
+  --sgo-sidebar-collapsed: 64px;
+  --sgo-header-height: 60px;
+  --sgo-transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --sgo-radius: 8px;
+}
+
+* { box-sizing: border-box; }
+html { -webkit-font-smoothing: antialiased; }
+body {
+  margin: 0;
+  background: #f8fafc;
+  color: #1e293b;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 14px;
+}
+
+/* ── Layout principal ── */
+.sgo-layout { display: flex; min-height: 100vh; }
+
+.sgo-sidebar {
+  position: fixed; top: 0; left: 0;
+  width: var(--sgo-sidebar-width);
+  height: 100vh;
+  background: #fff;
+  border-right: 1px solid #e2e8f0;
+  display: flex; flex-direction: column;
+  transition: width var(--sgo-transition);
+  z-index: 40; overflow: hidden;
+}
+.sgo-sidebar.collapsed { width: var(--sgo-sidebar-collapsed); }
+
+.sgo-main {
+  flex: 1;
+  margin-left: var(--sgo-sidebar-width);
+  transition: margin-left var(--sgo-transition);
+  display: flex; flex-direction: column;
+  min-height: 100vh;
+}
+.sgo-main.collapsed { margin-left: var(--sgo-sidebar-collapsed); }
+
+.sgo-header {
+  height: var(--sgo-header-height);
+  background: #fff;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex; align-items: center;
+  padding: 0 1.5rem; gap: 1rem;
+  position: sticky; top: 0; z-index: 30;
+}
+
+.sgo-content { padding: 1.5rem; flex: 1; }
+
+/* ── Card ── */
+.sgo-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: var(--sgo-radius);
+  padding: 1.5rem;
+}
+.sgo-card-title { font-size: 1rem; font-weight: 600; color: #1e293b; }
+
+/* ── Badges de status ── */
+.badge {
+  display: inline-flex; align-items: center;
+  border-radius: 4px; font-size: 0.75rem;
+  font-weight: 500; padding: 2px 8px;
+}
+.badge-ativo     { background: #dcfce7; color: #15803d; }
+.badge-inativo   { background: #fee2e2; color: #b91c1c; }
+.badge-reserva   { background: #fef3c7; color: #b45309; }
+.badge-pendente  { background: #dbeafe; color: #1d4ed8; }
+.badge-aprovado  { background: #dcfce7; color: #15803d; }
+.badge-reprovado { background: #fee2e2; color: #b91c1c; }
+.badge-desligado { background: #f1f5f9; color: #64748b; }
+
+/* ── Badge capacidade crítica ── */
+.badge-capacidade {
+  display: inline-flex; align-items: center; gap: 3px;
+  background: #fef3c7; color: #b45309;
+  border: 1px solid #fcd34d; border-radius: 4px;
+  font-size: 0.6875rem; font-weight: 600; padding: 2px 6px;
+}
+
+/* ── Grid de formulário ── */
+.form-grid   { display: grid; gap: 1rem; }
+.form-grid-2 { grid-template-columns: repeat(2, 1fr); }
+.form-grid-3 { grid-template-columns: repeat(3, 1fr); }
+.form-grid-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 768px) {
+  .form-grid-2, .form-grid-3, .form-grid-4 { grid-template-columns: 1fr; }
+  .sgo-main { margin-left: 0 !important; }
+}
+
+/* ── PrimeVue: fixes globais ── */
+/* Password — força largura total */
+.p-password             { width: 100%; }
+.p-password-input       { width: 100%; }
+
+/* InputText — largura total por padrão */
+.p-inputtext            { width: 100%; }
+
+/* Select/Dropdown — largura total */
+.p-select               { width: 100%; }
+
+/* DataTable cabeçalho */
+.p-datatable .p-datatable-thead > tr > th {
+  background: #f8fafc !important;
+  color: #64748b !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Animações ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-up { animation: fadeUp 200ms ease-out; }
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
