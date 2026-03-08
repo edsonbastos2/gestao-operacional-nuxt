@@ -47,7 +47,7 @@ export default defineNuxtConfig({
 
   typescript: { strict: false },
 
-  css: ["~/assets/main.css"],
+  css: ["primeicons/primeicons.css", "~/assets/main.css"],
 
   imports: {
     dirs: ["stores", "composables"],

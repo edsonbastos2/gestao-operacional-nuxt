@@ -1,39 +1,46 @@
-import { createClient } from '@supabase/supabase-js'
+import { getUsuarioAutenticado } from "~/server/utils/supabase";
 
 export default defineEventHandler(async (event) => {
-  const token = getCookie(event, 'sgo-token')
-  if (!token) throw createError({ statusCode: 401, message: 'Não autenticado.' })
+  const { me, supabase } = await getUsuarioAutenticado(event, "ti_admin");
 
-  const config = useRuntimeConfig()
-  const supabase = createClient(process.env.SUPABASE_URL!, config.supabaseServiceKey)
-
-  // Verifica se é admin
-  const { data: { user } } = await supabase.auth.getUser(token)
-  if (!user) throw createError({ statusCode: 401 })
-  const { data: me } = await supabase.from('sgo_usuarios').select('perfil').eq('auth_user_id', user.id).single()
-  if (me?.perfil !== 'ti_admin') throw createError({ statusCode: 403, message: 'Acesso negado.' })
-
-  const query = getQuery(event)
-  const page = Number(query.page ?? 1)
-  const pageSize = 20
-  const from = (page - 1) * pageSize
-  const to = from + pageSize - 1
+  const query = getQuery(event);
+  const page = Number(query.page ?? 1);
+  const pageSize = 20;
+  const from = (page - 1) * pageSize;
+  const to = from + pageSize - 1;
 
   let q = supabase
-    .from('sgo_usuarios')
-    .select('id, nome, email, login, perfil, status, primeiro_acesso, tentativas_login, ultimo_acesso, created_at, sgo_capacidades_usuario(id, usuario_id, capacidade, gerente_id, justificativa, validade, revogada_em, created_at)', { count: 'exact' })
-    .order('nome')
-    .range(from, to)
+    .from("sgo_usuarios")
+    .select(
+      "id, nome, email, login, perfil, status, primeiro_acesso, tentativas_login, ultimo_acesso, created_at",
+      { count: "exact" },
+    )
+    .order("nome")
+    .range(from, to);
 
-  if (query.q)      q = q.ilike('nome', `%${query.q}%`)
-  if (query.perfil) q = q.eq('perfil', query.perfil)
-  if (query.status) q = q.eq('status', query.status)
+  if (query.q) q = q.ilike("nome", `%${query.q}%`);
+  if (query.perfil) q = q.eq("perfil", query.perfil as string);
+  if (query.status) q = q.eq("status", query.status as string);
 
-  const { data, count, error } = await q
-  if (error) throw createError({ statusCode: 500, message: error.message })
+  const { data: usuarios, count, error } = await q;
+  if (error) throw createError({ statusCode: 500, message: error.message });
+
+  // Busca capacidades separadamente
+  const ids = (usuarios ?? []).map((u) => u.id);
+  const { data: caps } = ids.length
+    ? await supabase
+        .from("sgo_capacidades_usuario")
+        .select(
+          "id, usuario_id, capacidade, gerente_id, justificativa, validade, revogada_em, created_at",
+        )
+        .in("usuario_id", ids)
+    : { data: [] };
 
   return {
-    data: (data ?? []).map(u => ({ ...u, capacidades: u.sgo_capacidades_usuario ?? [] })),
+    data: (usuarios ?? []).map((u) => ({
+      ...u,
+      capacidades: (caps ?? []).filter((c) => c.usuario_id === u.id),
+    })),
     total: count ?? 0,
-  }
-})
+  };
+});
