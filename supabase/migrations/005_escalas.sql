@@ -50,8 +50,7 @@ CREATE TABLE IF NOT EXISTS sgo_feriados (
   recorrente BOOLEAN NOT NULL DEFAULT true,  -- repete todo ano
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  created_by UUID, updated_by UUID,
-  UNIQUE(data, COALESCE(uf,''), COALESCE(municipio,''))
+  created_by UUID, updated_by UUID
 );
 
 -- ── Calendário de Competência ─────────────────────────────────
@@ -89,6 +88,7 @@ CREATE TRIGGER trg_calendario_upd BEFORE UPDATE ON sgo_calendario FOR EACH ROW E
 CREATE INDEX IF NOT EXISTS idx_turnos_escala      ON sgo_turnos(escala_id);
 CREATE INDEX IF NOT EXISTS idx_feriados_data       ON sgo_feriados(data);
 CREATE INDEX IF NOT EXISTS idx_feriados_uf         ON sgo_feriados(uf);
+CREATE UNIQUE INDEX IF NOT EXISTS uq_feriados_data_localidade ON sgo_feriados (data, COALESCE(uf,''), COALESCE(municipio,''));
 CREATE INDEX IF NOT EXISTS idx_calendario_colab    ON sgo_calendario(colaborador_id);
 CREATE INDEX IF NOT EXISTS idx_calendario_comp     ON sgo_calendario(competencia);
 CREATE INDEX IF NOT EXISTS idx_calendario_data     ON sgo_calendario(data);
