@@ -78,6 +78,7 @@ const grupos: NavGroup[] = [
   {
     label: 'Relatórios', perfis: ['ti_admin', 'operacao', 'rh', 'financeiro', 'controladoria'],
     items: [
+      { label: 'Mapa de Vagas',  icon: 'pi-map',          route: '/relatorios/mapa-vagas' },
       { label: 'Alocação',      icon: 'pi-table',        route: '/relatorios/alocacao' },
       { label: 'Operacionais',  icon: 'pi-file',         route: '/relatorios/operacionais' },
       { label: 'Benefícios',    icon: 'pi-gift',         route: '/relatorios/beneficios' },

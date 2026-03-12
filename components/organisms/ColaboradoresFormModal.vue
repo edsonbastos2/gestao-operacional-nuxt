@@ -46,8 +46,17 @@ async function salvar() {
   if (!form.value.data_admissao) { erros.value.data_admissao = 'Obrigatório.'; ok = false }
   if (!form.value.prestadora_id) { erros.value.prestadora_id = 'Obrigatório.'; ok = false }
   if (!ok) return
+
+  // Tratamento para campos vazios
+  const payload = { ...form.value }
+  Object.keys(payload).forEach(key => {
+    if (typeof payload[key] === 'string' && payload[key].trim() === '') {
+      payload[key] = null
+    }
+  })
+
   try {
-    await store.salvarColaborador(form.value, isEdicao.value ? props.colaborador.id : undefined)
+    await store.salvarColaborador(payload, isEdicao.value ? props.colaborador.id : undefined)
     toast.add({ severity: 'success', summary: isEdicao.value ? 'Colaborador atualizado.' : 'Colaborador cadastrado.', life: 3000 })
     emit('saved'); emit('update:visible', false)
   } catch { toast.add({ severity: 'error', summary: store.error ?? 'Erro ao salvar.', life: 4000 }) }

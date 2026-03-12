@@ -68,7 +68,7 @@ export const useColaboradoresStore = defineStore('colaboradores', () => {
   async function salvarCandidato(payload: Partial<Candidato>, id?: string) {
     saving.value = true; error.value = null
     try {
-      if (id) return await $fetch(`/api/colaboradores/candidatos/${id}`, { method: 'PATCH', body: payload })
+      if (id) return await $fetch(`/api/colaboradores/candidatos/${id}`, { method: 'PATCH' as any, body: payload })
       return await $fetch('/api/colaboradores/candidatos', { method: 'POST', body: payload })
     } catch (e: any) { error.value = e?.data?.message ?? 'Erro ao salvar.'; throw e } finally { saving.value = false }
   }
@@ -76,7 +76,7 @@ export const useColaboradoresStore = defineStore('colaboradores', () => {
   async function atualizarStatusCandidato(id: string, status: string, motivo?: string) {
     saving.value = true; error.value = null
     try {
-      const res = await $fetch<{ status: string }>(`/api/colaboradores/candidatos/${id}/status`, { method: 'PATCH', body: { status, motivo } })
+      const res = await $fetch<{ status: string }>(`/api/colaboradores/candidatos/${id}/status`, { method: 'PATCH' as any, body: { status, motivo } })
       const c = candidatos.value.find(x => x.id === id)
       if (c) c.status = res.status
     } catch (e: any) { error.value = e?.data?.message ?? 'Erro.'; throw e } finally { saving.value = false }
@@ -112,7 +112,7 @@ export const useColaboradoresStore = defineStore('colaboradores', () => {
   async function salvarColaborador(payload: Partial<Colaborador>, id?: string) {
     saving.value = true; error.value = null
     try {
-      if (id) return await $fetch(`/api/colaboradores/${id}`, { method: 'PATCH', body: payload })
+      if (id) return await $fetch(`/api/colaboradores/${id}`, { method: 'PATCH' as any, body: payload })
       return await $fetch('/api/colaboradores', { method: 'POST', body: payload })
     } catch (e: any) { error.value = e?.data?.message ?? 'Erro ao salvar.'; throw e } finally { saving.value = false }
   }
@@ -120,7 +120,7 @@ export const useColaboradoresStore = defineStore('colaboradores', () => {
   async function alternarStatusColaborador(id: string, status: string, justificativa: string) {
     saving.value = true; error.value = null
     try {
-      const res = await $fetch<{ status: string }>(`/api/colaboradores/${id}/status`, { method: 'PATCH', body: { status, justificativa } })
+      const res = await $fetch<{ status: string }>(`/api/colaboradores/${id}/status`, { method: 'PATCH' as any, body: { status, justificativa } })
       const c = colaboradores.value.find(x => x.id === id)
       if (c) c.status = res.status
     } catch (e: any) { error.value = e?.data?.message ?? 'Erro.'; throw e } finally { saving.value = false }
@@ -139,14 +139,14 @@ export const useColaboradoresStore = defineStore('colaboradores', () => {
   async function salvarAlocacao(payload: Partial<Alocacao>, id?: string) {
     saving.value = true; error.value = null
     try {
-      if (id) return await $fetch(`/api/colaboradores/alocacoes/${id}`, { method: 'PATCH', body: payload })
+      if (id) return await $fetch(`/api/colaboradores/alocacoes/${id}`, { method: 'PATCH' as any, body: payload })
       return await $fetch('/api/colaboradores/alocacoes', { method: 'POST', body: payload })
     } catch (e: any) { error.value = e?.data?.message ?? 'Erro ao salvar alocação.'; throw e } finally { saving.value = false }
   }
 
   async function encerrarAlocacao(id: string, data_fim: string) {
     saving.value = true; error.value = null
-    try { return await $fetch(`/api/colaboradores/alocacoes/${id}/encerrar`, { method: 'PATCH', body: { data_fim } }) }
+    try { return await $fetch(`/api/colaboradores/alocacoes/${id}/encerrar`, { method: 'PATCH' as any, body: { data_fim } }) }
     catch (e: any) { error.value = e?.data?.message ?? 'Erro.'; throw e } finally { saving.value = false }
   }
 
@@ -163,7 +163,7 @@ export const useColaboradoresStore = defineStore('colaboradores', () => {
   async function salvarAso(payload: Partial<Aso>, id?: string) {
     saving.value = true; error.value = null
     try {
-      if (id) return await $fetch(`/api/colaboradores/asos/${id}`, { method: 'PATCH', body: payload })
+      if (id) return await $fetch(`/api/colaboradores/asos/${id}`, { method: 'PATCH' as any, body: payload })
       return await $fetch('/api/colaboradores/asos', { method: 'POST', body: payload })
     } catch (e: any) { error.value = e?.data?.message ?? 'Erro ao salvar ASO.'; throw e } finally { saving.value = false }
   }
@@ -181,7 +181,7 @@ export const useColaboradoresStore = defineStore('colaboradores', () => {
   async function salvarDependente(payload: Partial<Dependente>, id?: string) {
     saving.value = true; error.value = null
     try {
-      if (id) return await $fetch(`/api/colaboradores/dependentes/${id}`, { method: 'PATCH', body: payload })
+      if (id) return await $fetch(`/api/colaboradores/dependentes/${id}`, { method: 'PATCH' as any, body: payload })
       return await $fetch('/api/colaboradores/dependentes', { method: 'POST', body: payload })
     } catch (e: any) { error.value = e?.data?.message ?? 'Erro ao salvar dependente.'; throw e } finally { saving.value = false }
   }

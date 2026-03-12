@@ -144,7 +144,7 @@ const statusColor: Record<string, string> = {
     <AppConfirmDialog v-model:visible="confirmStatus"
       :title="`Alterar status para ${novoStatus}`"
       :message="`Confirma alteração de status de ${selecionado?.nome}?`"
-      severity="warn" require-justificativa :loading="store.saving" @confirm="confirmarStatus" />
+      severity="warning" require-justificativa :loading="store.saving" @confirm="confirmarStatus" />
     <Toast />
   </div>
 </template>
