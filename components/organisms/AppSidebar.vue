@@ -64,9 +64,9 @@ const grupos: NavGroup[] = [
   {
     label: 'Benefícios', perfis: ['ti_admin', 'operacao', 'rh', 'financeiro', 'controladoria'],
     items: [
-      { label: 'Tipos',        icon: 'pi-list',        route: '/beneficios/tipos' },
-      { label: 'Fornecedores', icon: 'pi-truck',       route: '/beneficios/fornecedores' },
-      { label: 'Valores',      icon: 'pi-money-bill',  route: '/beneficios/valores' },
+      { label: 'CCTs e Benefícios', icon: 'pi-file-edit',   route: '/beneficios' },
+      
+      { label: 'Colaboradores',     icon: 'pi-id-card',     route: '/beneficios/colaboradores' },
     ],
   },
   {
