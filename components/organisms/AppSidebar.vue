@@ -20,69 +20,53 @@ const grupos: NavGroup[] = [
   {
     label: 'Administração', perfis: ['ti_admin'],
     items: [
-      { label: 'Usuários',     icon: 'pi-users',  route: '/admin/usuarios' },
-      { label: 'Perfis',       icon: 'pi-shield', route: '/admin/perfis' },
-      { label: 'Capacidades',  icon: 'pi-lock',   route: '/admin/capacidades', critico: true },
+      { label: 'Usuários', icon: 'pi-users', route: '/admin/usuarios' },
     ],
   },
   {
     label: 'Cadastros', perfis: ['ti_admin', 'operacao', 'rh'],
     items: [
-      { label: 'Prestadoras', icon: 'pi-building',    route: '/cadastros/prestadoras' },
-      { label: 'Tomadores',   icon: 'pi-briefcase',   route: '/cadastros/tomadores' },
-      { label: 'Postos',      icon: 'pi-map-marker',  route: '/cadastros/postos' },
-      { label: 'Funções',     icon: 'pi-tag',         route: '/cadastros/funcoes' },
-      { label: 'Feriados',    icon: 'pi-calendar',    route: '/cadastros/feriados' },
+      { label: 'Prestadoras', icon: 'pi-building',   route: '/cadastros/prestadoras' },
+      { label: 'Tomadores',   icon: 'pi-briefcase',  route: '/cadastros/tomadores' },
+      { label: 'Postos',      icon: 'pi-map-marker', route: '/cadastros/postos' },
+      { label: 'Funções',     icon: 'pi-tag',        route: '/cadastros/funcoes' },
+      { label: 'Feriados',    icon: 'pi-calendar',   route: '/cadastros/feriados' },
     ],
   },
   {
     label: 'Colaboradores', perfis: ['ti_admin', 'operacao', 'rh', 'financeiro', 'controladoria'],
     items: [
-      { label: 'Candidatos',   icon: 'pi-user-plus', route: '/colaboradores/candidatos' },
-      { label: 'Colaboradores',icon: 'pi-id-card',   route: '/colaboradores' },
-      { label: 'Alocações',    icon: 'pi-map',       route: '/colaboradores/alocacoes' },
+      { label: 'Candidatos',    icon: 'pi-user-plus', route: '/colaboradores/candidatos' },
+      { label: 'Colaboradores', icon: 'pi-id-card',   route: '/colaboradores' },
     ],
   },
   {
     label: 'Escalas', perfis: ['ti_admin', 'operacao'],
     items: [
       { label: 'Escalas',    icon: 'pi-list',     route: '/escalas' },
-      { label: 'Turnos',     icon: 'pi-clock',    route: '/escalas/turnos' },
       { label: 'Calendário', icon: 'pi-calendar', route: '/escalas/calendario' },
     ],
   },
   {
-    label: 'Operação', perfis: ['ti_admin', 'operacao', 'supervisor_externo'],
+    label: 'Operação', perfis: ['ti_admin', 'operacao', 'supervisor_externo', 'rh'],
     items: [
-      { label: 'Faltas',              icon: 'pi-user-minus',          route: '/operacao/faltas' },
-      { label: 'Extras',              icon: 'pi-plus-circle',         route: '/operacao/extras' },
-      { label: 'Aprovações',          icon: 'pi-check-circle',        route: '/operacao/aprovacoes', critico: true },
-      { label: 'Feriados Trabalhados',icon: 'pi-sun',                 route: '/operacao/feriados-trabalhados' },
-      { label: 'Ocorrências',         icon: 'pi-exclamation-triangle',route: '/operacao/ocorrencias' },
+      { label: 'Faltas',               icon: 'pi-user-minus',           route: '/operacao/faltas' },
+      { label: 'Extras',               icon: 'pi-plus-circle',          route: '/operacao/extras' },
+      { label: 'Feriados Trabalhados', icon: 'pi-sun',                  route: '/operacao/feriados-trabalhados' },
+      { label: 'Ocorrências',          icon: 'pi-exclamation-triangle', route: '/operacao/ocorrencias' },
     ],
   },
   {
     label: 'Benefícios', perfis: ['ti_admin', 'operacao', 'rh', 'financeiro', 'controladoria'],
     items: [
-      { label: 'CCTs e Benefícios', icon: 'pi-file-edit',   route: '/beneficios' },
-      
-      { label: 'Colaboradores',     icon: 'pi-id-card',     route: '/beneficios/colaboradores' },
-    ],
-  },
-  {
-    label: 'Competência', perfis: ['ti_admin', 'operacao'],
-    items: [
-      { label: 'Competência', icon: 'pi-calendar-plus', route: '/competencia', critico: true },
+      { label: 'CCTs e Benefícios', icon: 'pi-file-edit', route: '/beneficios' },
+      { label: 'Colaboradores',     icon: 'pi-id-card',   route: '/beneficios/colaboradores' },
     ],
   },
   {
     label: 'Relatórios', perfis: ['ti_admin', 'operacao', 'rh', 'financeiro', 'controladoria'],
     items: [
-      { label: 'Mapa de Vagas',  icon: 'pi-map',          route: '/relatorios/mapa-vagas' },
-      { label: 'Alocação',      icon: 'pi-table',        route: '/relatorios/alocacao' },
-      { label: 'Operacionais',  icon: 'pi-file',         route: '/relatorios/operacionais' },
-      { label: 'Benefícios',    icon: 'pi-gift',         route: '/relatorios/beneficios' },
-      { label: 'Auditoria',     icon: 'pi-eye',          route: '/relatorios/auditoria' },
+      { label: 'Mapa de Vagas', icon: 'pi-map', route: '/relatorios/mapa-vagas' },
     ],
   },
 ]
