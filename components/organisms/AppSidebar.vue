@@ -64,6 +64,18 @@ const grupos: NavGroup[] = [
     ],
   },
   {
+    label: 'Financeiro', perfis: ['ti_admin', 'financeiro', 'controladoria'],
+    items: [
+      { label: 'Folha de Pagamento', icon: 'pi-money-bill',  route: '/financeiro' },
+    ],
+  },
+  {
+    label: 'Competência', perfis: ['ti_admin'],
+    items: [
+      { label: 'Competências', icon: 'pi-calendar-plus', route: '/competencia' },
+    ],
+  },
+  {
     label: 'Relatórios', perfis: ['ti_admin', 'operacao', 'rh', 'financeiro', 'controladoria'],
     items: [
       { label: 'Mapa de Vagas', icon: 'pi-map', route: '/relatorios/mapa-vagas' },

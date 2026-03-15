@@ -6,6 +6,21 @@ export default defineEventHandler(async (event) => {
   if (!body.colaborador_id || !body.alocacao_id || !body.data_extra || !body.horas || !body.motivo)
     throw createError({ statusCode: 400, message: 'Colaborador, alocação, data, horas e motivo são obrigatórios.' })
 
+  // Bloqueia lançamento se competência estiver fechada
+  const dataRef = body.data_extra
+  if (dataRef) {
+    const d = new Date(dataRef + 'T12:00:00')
+    const { data: comp } = await supabase
+      .from('sgo_competencias')
+      .select('status_fechamento')
+      .eq('ano', d.getFullYear())
+      .eq('mes', d.getMonth() + 1)
+      .single()
+    if (comp?.status_fechamento === 'fechada')
+      throw createError({ statusCode: 422, message: 'Competência fechada. Não é possível lançar extras para este período.' })
+  }
+
+
   if (Number(body.horas) <= 0 || Number(body.horas) > 24)
     throw createError({ statusCode: 422, message: 'Horas extras devem ser entre 0 e 24.' })
 

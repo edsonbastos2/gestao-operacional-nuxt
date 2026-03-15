@@ -8,6 +8,21 @@ export default defineEventHandler(async (event) => {
   if (!body.colaborador_id || !body.alocacao_id || !body.data_falta || !body.tipo)
     throw createError({ statusCode: 400, message: 'Colaborador, alocação, data e tipo são obrigatórios.' })
 
+  // Bloqueia lançamento se competência estiver fechada
+  const dataRef = body.data_falta
+  if (dataRef) {
+    const d = new Date(dataRef + 'T12:00:00')
+    const { data: comp } = await supabase
+      .from('sgo_competencias')
+      .select('status_fechamento')
+      .eq('ano', d.getFullYear())
+      .eq('mes', d.getMonth() + 1)
+      .single()
+    if (comp?.status_fechamento === 'fechada')
+      throw createError({ statusCode: 422, message: 'Competência fechada. Não é possível lançar faltas para este período.' })
+  }
+
+
   // Atraso parcial exige horas_falta < 8
   if (body.tipo === 'atraso_parcial' && (!body.horas_falta || Number(body.horas_falta) >= 8))
     throw createError({ statusCode: 422, message: 'Atraso parcial exige horas de falta entre 0 e 8.' })
